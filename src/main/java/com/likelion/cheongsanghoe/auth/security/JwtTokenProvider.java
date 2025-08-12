@@ -25,7 +25,7 @@ public class JwtTokenProvider {
         this.validityInMilliseconds = validityInMilliseconds;
     }
 
-    // 이메일을 기반으로 토큰 생성
+   
     public String getEmailFromToken(String token) {
         try {
             // 0.12.x 버전에서는 parser() 대신 parserBuilder() 사용
@@ -40,7 +40,7 @@ public class JwtTokenProvider {
         }
     }
 
-    // 역할을 기반으로 토큰에서 역할 추출
+  
     public String getRoleFromToken(String token) {
         try {
             Claims claims = Jwts.parser()
@@ -54,7 +54,7 @@ public class JwtTokenProvider {
         }
     }
 
-    // 토큰 유효성 검사
+    
     public boolean validateToken(String token) {
         try {
             Jwts.parser()
@@ -67,7 +67,7 @@ public class JwtTokenProvider {
         }
     }
 
-    // 토큰 생성 (이메일과 역할을 포함)
+    
     public String createToken(String email, String role) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
@@ -81,7 +81,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // Authentication 객체 생성
+    
     public Authentication getAuthentication(String token) {
         String email = getEmailFromToken(token);
         String role = getRoleFromToken(token);
@@ -97,7 +97,7 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(email, token, authorities);
     }
 
-    // 토큰에서 만료 시간 확인
+    
     public boolean isTokenExpired(String token) {
         try {
             Claims claims = Jwts.parser()
@@ -111,16 +111,6 @@ public class JwtTokenProvider {
         }
     }
 
-    // 블랙리스트된 토큰 체크용 (필요시)
-    private final List<String> blacklistedTokens = Collections.synchronizedList(new java.util.ArrayList<>());
-
-    public void addToBlacklist(String token) {
-        blacklistedTokens.add(token);
-    }
-
-    public boolean isBlacklisted(String token) {
-        return blacklistedTokens.contains(token);
-    }
 
     // JwtTokenProvider 클래스에 추가
     public void invalidateToken(String token) {

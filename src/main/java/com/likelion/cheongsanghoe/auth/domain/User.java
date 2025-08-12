@@ -23,7 +23,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    // 추가된 필드
     private String name;
     private String profileImage;
 
@@ -50,7 +49,7 @@ public class User {
         this.role = role;
     }
 
-    // 추가된 메서드
+
     public void updateProfile(String name, String profileImage) {
         this.name = name;
         this.profileImage = profileImage;

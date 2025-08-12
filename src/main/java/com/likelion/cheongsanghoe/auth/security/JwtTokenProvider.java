@@ -28,12 +28,12 @@ public class JwtTokenProvider {
    
     public String getEmailFromToken(String token) {
         try {
-            // 0.12.x 버전에서는 parser() 대신 parserBuilder() 사용
+           
             Claims claims = Jwts.parser()
-                    .verifyWith(key)  // setSigningKey 대신 verifyWith 사용
+                    .verifyWith(key)  
                     .build()
-                    .parseSignedClaims(token)  // parseClaimsJws 대신 parseSignedClaims 사용
-                    .getPayload();  // getBody 대신 getPayload 사용
+                    .parseSignedClaims(token)  
+                    .getPayload();  
             return claims.getSubject();
         } catch (Exception e) {
             return null;
@@ -73,10 +73,10 @@ public class JwtTokenProvider {
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
-                .subject(email)  // setSubject 대신 subject 사용
+                .subject(email)  
                 .claim("role", role)
-                .issuedAt(now)  // setIssuedAt 대신 issuedAt 사용
-                .expiration(validity)  // setExpiration 대신 expiration 사용
+                .issuedAt(now)  
+                .expiration(validity) 
                 .signWith(key)
                 .compact();
     }
@@ -112,7 +112,7 @@ public class JwtTokenProvider {
     }
 
 
-    // JwtTokenProvider 클래스에 추가
+   
     public void invalidateToken(String token) {
         blacklistedTokens.add(token);
 

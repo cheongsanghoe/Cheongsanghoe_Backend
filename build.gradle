@@ -44,18 +44,18 @@ dependencies {
     // OAuth2 (소셜 로그인용)
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
-    // JWT 토큰 처리 (필요한 경우)
+    // JWT 토큰 처리
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
     implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
-    // Jackson (JSON 처리 - 이미 web starter에 포함되지만 명시적으로)
+   
     implementation 'com.fasterxml.jackson.core:jackson-databind'
 
-    // Spring Security Test (테스트용)
+    
     testImplementation 'org.springframework.security:spring-security-test'
 
-    // H2 Database (테스트용 - 선택사항)
+    // 이건 테스트용
     testImplementation 'com.h2database:h2'
 }
 

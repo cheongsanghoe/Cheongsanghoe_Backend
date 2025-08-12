@@ -27,7 +27,7 @@ public class MemberController {
     private final MemberService memberService;
     // private final FileService fileService; // 파일 업로드 서비스 (나중에 구현해야 하는 부분임)
 
-    //회원 프로필 생성 (소셜 로그인 후 추가 정보 입력)
+
 
     @PostMapping("/profile")
     public ResponseEntity<MemberInfoResponseDto> createProfile(
@@ -54,7 +54,7 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
-    //특정 회원 정보 조회
+    //특정 회원 정보 조회-빼야 하는건가..
 
     @GetMapping("/{memberId}")
     public ResponseEntity<MemberInfoResponseDto> getMemberInfo(@PathVariable Long memberId) {
@@ -147,7 +147,7 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
-    //회원 검색 (닉네임)
+    //회원 검색 (닉네임)-검색 기능을 여기에 넣는게 맞는건지는 잘 모르겠어요
 
     @GetMapping("/search")
     public ResponseEntity<Page<MemberInfoResponseDto>> searchMembers(
@@ -166,30 +166,7 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
-    //검색 (닉네임 + 지역)
-
-    @GetMapping("/search/advanced")
-    public ResponseEntity<Page<MemberInfoResponseDto>> advancedSearch(
-            @RequestParam(required = false) String nickname,
-            @RequestParam(required = false) String address,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "createdAt") String sort,
-            @RequestParam(defaultValue = "desc") String direction) {
-
-        log.info("Advanced search with nickname: {}, address: {}", nickname, address);
-
-        Sort sortObj = Sort.by(Sort.Direction.fromString(direction), sort);
-        Pageable pageable = PageRequest.of(page, size, sortObj);
-
-        Page<MemberInfoResponseDto> response = memberService.searchMembers(nickname, address, pageable);
-        return ResponseEntity.ok(response);
-    }
-
-    /**
-     * 지역별 회원 조회
-     * GET /api/members/by-address?address=지역명
-     */
+    
     @GetMapping("/by-address")
     public ResponseEntity<Page<MemberInfoResponseDto>> getMembersByAddress(
             @RequestParam String address,
@@ -236,61 +213,4 @@ public class MemberController {
         }
     }
 
-    /**
-     * 회원 신고
-     * POST /api/members/{memberId}/report
-     */
-    @PostMapping("/{memberId}/report")
-    public ResponseEntity<Map<String, String>> reportMember(@PathVariable Long memberId) {
-        log.info("Reporting member: {}", memberId);
-
-        memberService.reportMember(memberId);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "신고가 접수되었습니다.");
-
-        return ResponseEntity.ok(response);
-    }
-
-    //회원 통계 조회 (관리자용)
-
-    @GetMapping("/statistics")
-    public ResponseEntity<Map<String, Object>> getMemberStatistics() {
-        log.info("Getting member statistics");
-
-        Map<String, Object> statistics = new HashMap<>();
-        statistics.put("totalActiveMembers", memberService.getActiveMembers());
-        statistics.put("ownerCount", memberService.getMerchantCount());
-        statistics.put("youngCount", memberService.getYoungCount());
-
-        return ResponseEntity.ok(statistics);
-    }
-
-     //회원 정지 (관리자용)
-
-    @PostMapping("/{memberId}/suspend")
-    public ResponseEntity<Map<String, String>> suspendMember(@PathVariable Long memberId) {
-        log.info("Suspending member: {}", memberId);
-
-        memberService.suspendMember(memberId);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "회원이 정지되었습니다.");
-
-        return ResponseEntity.ok(response);
-    }
-
-    //회원 활성화 (관리자용)
-
-    @PostMapping("/{memberId}/activate")
-    public ResponseEntity<Map<String, String>> activateMember(@PathVariable Long memberId) {
-        log.info("Activating member: {}", memberId);
-
-        memberService.activateMember(memberId);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "회원이 활성화되었습니다.");
-
-        return ResponseEntity.ok(response);
-    }
 }

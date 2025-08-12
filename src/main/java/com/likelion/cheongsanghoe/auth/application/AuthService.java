@@ -72,14 +72,14 @@ public class AuthService {
                     .user(AuthResponseDto.from(user, memberOpt.orElse(null)))
                     .build();
         } else {
-            // 새 User 생성 (role은 null)
+            // 새 User 생성
             User newUser = User.builder()
                     .email(email)
                     .build();
 
             User savedUser = userRepository.save(newUser);
 
-            // 새 Member 생성 (Google에서 받은 기본 정보로)
+            // 새 Member 생성-그 구글에서 받은 기본 정보로 생성
             Member newMember = Member.builder()
                     .user(savedUser)
                     .profileImageUrl(profileImage)
@@ -122,7 +122,7 @@ public class AuthService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-        // Member 정보도 함께 조회
+        
         Optional<Member> member = memberRepository.findByUser(user);
 
         return AuthResponseDto.from(user, member.orElse(null));
